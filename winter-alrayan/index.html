@@ -607,7 +607,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   dev.addEventListener('click', function (e) { e.stopPropagation(); toggleDev(); });
   document.addEventListener('click', function (e) { if (!pop.hidden && !pop.contains(e.target)) toggleDev(false); });
 
-  $('#orderPill').addEventListener('click', function () { $('#win').scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' }); });
+  $('#orderPill').addEventListener('click', function () { $('#menu').scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' }); });
 
   /* ---------- scroll story ---------- */
   var hero = $('#hero'), stage = $('#stage'), menu = $('#menu'), win = $('#win'), duo = $('#duo');
