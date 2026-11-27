@@ -54,7 +54,7 @@ body.in-menu #devPop{display:none}
 #hero{position:relative;z-index:2;height:430vh}
 #stage{position:sticky;top:0;height:100vh;overflow:hidden;pointer-events:none}
 .vig{background:linear-gradient(180deg,rgba(18,13,10,.55) 0%,rgba(18,13,10,0) 16%,rgba(18,13,10,0) 74%,rgba(18,13,10,.72) 100%)}
-#snow{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+#snow{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;opacity:0}
 /* the formula above the matcha clip */
 .formula{position:absolute;left:0;right:0;bottom:min(calc(50vh + 28.125vw + 18px),calc(100vh - 190px));display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 20px;opacity:var(--e,0);text-align:center}
 .eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:rgba(243,233,200,.85)}
@@ -646,7 +646,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   // scroll budget (vh): clip 1 = 90, slide = 70, clip 2 = 170 -> 330vh; the menu sheet then rises over the last matcha frame
   var A_END = 90 / 330, B_START = 160 / 330, B_END = 1;
   var hero = $('#hero'), stage = $('#stage'), menu = $('#menu'), win = $('#win'), duo = $('#duo'), cv = $('#cv');
-  var imgs = new Array(NA + NB), loaded = 0, dirty = true, lastKey = '', raf = 0, heroOn = true;
+  var snowEl = $('#snow'), imgs = new Array(NA + NB), loaded = 0, dirty = true, lastKey = '', raf = 0, heroOn = true;
   var tiny = document.createElement('canvas'); tiny.width = 20; tiny.height = 36;
   var off = document.createElement('canvas');
   var bg = new Image(), bgReady = false;
@@ -769,7 +769,9 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
     set('--r3', sm(clamp01((u - 0.5) / 0.14)));
     set('--lg', sm(clamp01((u - 0.7) / 0.18)));
     var top = menu.getBoundingClientRect().top;
-    heroOn = top > 0;
+    var sn = clamp01((p - A_END) / (B_START - A_END));
+    heroOn = sn > 0 && top > 0;
+    snowEl.style.opacity = sn.toFixed(3);
     document.body.classList.toggle('in-menu', top < vh * 0.6);
     var q = still ? 1 : clamp01((vh - top) / (vh * 0.75));
     var qe = 1 - Math.pow(1 - q, 3);
