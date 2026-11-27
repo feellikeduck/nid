@@ -48,24 +48,25 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,.42)}
 body.in-menu #orderPill,body.in-menu #dev{opacity:0;pointer-events:none;transform:translateY(-10px)}
 body.in-menu #devPop{display:none}
 
-/* hero */
-#hero{position:relative;height:250vh}
-#stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
-#heroBg{position:absolute;inset:-4%;background:url(assets/glass.jpg) center/cover no-repeat;transform:scale(calc(1 + var(--p,0) * .12));filter:saturate(1.05) brightness(.62);will-change:transform}
-#stage::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 70% at 50% 38%,rgba(243,233,200,.18),rgba(18,13,10,0) 55%),linear-gradient(180deg,rgba(18,13,10,.55) 0%,rgba(18,13,10,.1) 30%,rgba(18,13,10,.35) 70%,rgba(18,13,10,.95) 100%);pointer-events:none}
-#snow{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.heroInner{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 20px;gap:10px}
-.heroLogo{font-size:clamp(60px,19vw,148px);line-height:1;text-shadow:0 6px 40px rgba(0,0,0,.55),0 0 30px rgba(243,233,200,.25);opacity:calc(1 - var(--p,0) * 1.4);transform:translateY(calc(var(--p,0) * -30px))}
-.heroSub{font-size:clamp(15px,4.2vw,20px);color:rgba(255,255,255,.85);letter-spacing:.01em;opacity:calc(1 - var(--p,0) * 1.6)}
-.flip{margin-top:min(6vh,48px);height:1.12em;overflow:hidden;font-size:clamp(42px,12vw,104px);font-weight:600;letter-spacing:-.02em;line-height:1.12;text-shadow:0 4px 30px rgba(0,0,0,.5)}
+/* hero: scroll-scrubbed clips on a fixed canvas */
+#cv{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0;background:var(--bg)}
+.vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(18,13,10,.5) 0%,rgba(18,13,10,0) 15%,rgba(18,13,10,0) 80%,rgba(18,13,10,.5) 100%)}
+#hero{position:relative;z-index:2;height:630vh}
+#stage{position:sticky;top:0;height:100vh;overflow:hidden;pointer-events:none}
+.words{position:absolute;left:0;right:0;bottom:min(calc(50vh + 28.125vw + 22px),calc(100vh - 170px));display:flex;justify-content:center;opacity:var(--e,0)}
+.flip{height:1.12em;overflow:hidden;font-size:clamp(40px,11.5vw,104px);font-weight:600;letter-spacing:-.02em;line-height:1.12;text-align:center;text-shadow:0 4px 30px rgba(0,0,0,.5)}
 .flip>div{transform:translateY(calc(var(--hw,0) * -1.12em));will-change:transform}
+#loadBar{position:absolute;left:50%;top:max(80px,calc(env(safe-area-inset-top) + 70px));width:min(140px,40vw);height:3px;margin-left:calc(min(140px,40vw) / -2);border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden;transition:opacity .4s}
+#loadBar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+#loadBar.done{opacity:0}
 .hint{position:absolute;left:0;right:0;bottom:max(28px,env(safe-area-inset-bottom));z-index:2;display:flex;justify-content:center;opacity:var(--ca,1)}
+.hint.keep{opacity:var(--ck,0)}
 .hint>div{display:flex;align-items:center;gap:8px;padding:10px 14px 10px 18px;border-radius:999px;font-size:14px}
 .nudge{animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
 /* menu sheet */
-#menu{position:relative;z-index:5;min-height:100vh;margin-top:-12vh;border-radius:30px 30px 0 0;border-top:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 -24px 60px rgba(0,0,0,.35);padding:70px 4vw max(36px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);background:rgba(255,255,255,.06)}
+#menu{position:relative;z-index:5;min-height:100vh;border-radius:30px 30px 0 0;border-top:1px solid rgba(255,255,255,.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 -24px 60px rgba(0,0,0,.35);padding:70px 4vw max(36px,env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);background:rgba(255,255,255,.06)}
 #win{position:relative;width:min(100%,560px);transform:translateY(calc((1 - var(--q,1)) * 16vh));will-change:transform}
 .duoWrap{display:flex;justify-content:flex-end;padding-right:4%;margin-bottom:-8px;position:relative;z-index:3}
 .duo{width:min(46vw,280px);transform-origin:70% 85%;opacity:0;transform:rotate(5deg)}
@@ -98,6 +99,7 @@ body.in-menu #devPop{display:none}
 .tile{display:flex;flex-direction:column;gap:6px;padding:14px 12px 12px;border-radius:20px;background:rgba(255,255,255,.06);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:background .2s,border-color .2s}
 .tile.on{background:rgba(243,233,200,.15);border-color:rgba(243,233,200,.65)}
 .tile .top{display:flex;justify-content:space-between;align-items:flex-start}
+.tile .ph{display:block;height:96px;width:auto;max-width:78%;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.45))}
 .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:rgba(243,233,200,.12);border:1px solid rgba(243,233,200,.22);color:var(--accent)}
 .badge{min-width:28px;height:28px;padding:0 7px;border-radius:14px;background:var(--accent);color:var(--ink);font-size:14px;font-weight:700;display:grid;place-items:center}
 .tile .nm{font-size:16px;font-weight:600;line-height:1.2;margin-top:4px}
@@ -183,7 +185,7 @@ body.in-menu #devPop{display:none}
 footer{margin-top:28px;font-size:12.5px;color:rgba(255,255,255,.45);text-align:center;line-height:1.7}
 footer a{color:rgba(243,233,200,.75);text-decoration:none}
 
-@media (prefers-reduced-motion:reduce){.nudge{animation:none}.duo,.duo.in{animation:none;opacity:1}#win{transform:none}#heroBg{transform:none}}
+@media (prefers-reduced-motion:reduce){.nudge{animation:none}.duo,.duo.in{animation:none;opacity:1}#win{transform:none}}
 </style>
 </head>
 <body>
@@ -204,16 +206,15 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   <span data-t="order"></span><span class="count" id="pillCount" hidden></span>
 </button>
 
+<canvas id="cv" aria-hidden="true"></canvas>
+<div class="vig" aria-hidden="true"></div>
 <header id="hero">
   <div id="stage">
-    <div id="heroBg" aria-hidden="true"></div>
-    <canvas id="snow" aria-hidden="true"></canvas>
-    <div class="heroInner">
-      <h1 class="script heroLogo" lang="en">Winter AlRayan</h1>
-      <p class="heroSub" data-t="tagline" style="margin:0"></p>
-      <div class="flip" aria-hidden="true"><div><div data-t="w1"></div><div data-t="w2"></div><div data-t="w3"></div></div></div>
-    </div>
+    <h1 class="sr">Winter AlRayan</h1>
+    <div id="loadBar" aria-hidden="true"><i></i></div>
+    <div class="words" aria-hidden="true"><div class="flip"><div><div data-t="w1"></div><div data-t="w2"></div><div data-t="w3"></div></div></div></div>
     <div class="hint"><div class="glass"><span data-t="scroll"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
+    <div class="hint keep"><div class="glass"><span data-t="keep"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
   </div>
 </header>
 
@@ -247,19 +248,18 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   };
 
   var MENU = [
-    { id: 'matcha',  g: 0, price: 16, en: 'Matcha',        ar: 'ماتشا',     den: 'Whisked matcha over creamy milk and ice', dar: 'ماتشا مخفوقة مع حليب كريمي وثلج', icon: 'M6 7h12l-1.6 13a1.5 1.5 0 0 1-1.5 1.3H9.1a1.5 1.5 0 0 1-1.5-1.3L6 7zM6.6 12h10.8M14 7l2-5h2.5' },
-    { id: 'karak',   g: 0, price: 6,  en: 'Karak',         ar: 'كرك',       den: 'Milk tea with cardamom, slow-brewed',     dar: 'شاي بالحليب والهيل على نار هادية', icon: 'M7 9h10l-1.2 8.5a2 2 0 0 1-2 1.5h-3.6a2 2 0 0 1-2-1.5L7 9zM4.5 21h15M10 3.5c-.8.9.8 1.6 0 2.5M14 3.5c-.8.9.8 1.6 0 2.5' },
-    { id: 'choco',   g: 0, price: 12, en: 'Hot Chocolate', ar: 'هوت شوكلت', den: 'Thick, rich and warm',                    dar: 'شوكولاتة كثيفة ودافية', icon: 'M5 9h11v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM16 11h1.5a2.5 2.5 0 0 1 0 5H16M8.5 3.5c-.8.9.8 1.6 0 2.5M12.5 3.5c-.8.9.8 1.6 0 2.5' },
-    { id: 'sahlab',  g: 0, price: 12, en: 'Sahlab',        ar: 'سحلب',      den: 'Warm creamy milk with cinnamon',          dar: 'حليب كريمي دافي مع قرفة', icon: 'M4 10h16a8 8 0 0 1-16 0zM9 21h6M12 18v3M8.5 7h.01M12 6h.01M15.5 7h.01' },
-    { id: 'hunaini', g: 1, price: 15, en: 'Hunaini',       ar: 'حنيني',     den: 'Dates, bread and ghee, served warm',       dar: 'تمر وخبز وسمن، يقدّم دافي', icon: 'M3 14h18M5.5 14c.6 3 3.3 5 6.5 5s5.9-2 6.5-5M6.6 10.5a2.4 1.4 0 1 0 4.8 0a2.4 1.4 0 1 0-4.8 0M12.6 10a2.4 1.4 0 1 0 4.8 0a2.4 1.4 0 1 0-4.8 0' },
-    { id: 'qishd',   g: 1, price: 15, en: 'Qishd',         ar: 'قشد',       den: 'Warm date dessert with cream',            dar: 'حلا التمر الدافي مع القشطة', icon: 'M4 11h16a8 8 0 0 1-16 0zM14.5 9l5-6M9 21h6' },
-    { id: 'cookies', g: 1, price: 8,  en: 'Cookies',       ar: 'كوكيز',     den: 'Fresh-baked, soft in the middle',          dar: 'كوكيز طازجة وطرية من النص', icon: 'M12 3a9 9 0 1 0 9 9 3 3 0 0 1-3-3 3 3 0 0 1-3-3 3 3 0 0 1-3-3zM8.5 10.5h.01M11 15h.01M15.5 14.5h.01M7.5 15h.01' }
+    { id: 'matcha',  g: 0, price: 23, img: 'matcha',  en: 'Classic Matcha', ar: 'ماتشا كلاسيك', den: 'Whisked matcha over creamy milk and ice', dar: 'ماتشا مخفوقة مع حليب كريمي وثلج' },
+    { id: 'choco',   g: 0, price: 15, img: 'choco',   en: 'Hot Chocolate',  ar: 'هوت شوكلت',    den: 'Thick, rich and warm',                    dar: 'شوكولاتة كثيفة ودافية' },
+    { id: 'sahlab',  g: 0, price: 10, img: 'sahlab',  en: 'Sahlab',         ar: 'سحلب',         den: 'Warm creamy milk with cinnamon',          dar: 'حليب كريمي دافي مع قرفة' },
+    { id: 'karak',   g: 0, price: 10, img: 'karak',   en: 'Karak',          ar: 'كرك',          den: 'Milk tea with cardamom, slow-brewed',     dar: 'شاي بالحليب والهيل على نار هادية' },
+    { id: 'qeshd',   g: 1, price: 10, img: 'qeshd',   en: 'Qeshd',          ar: 'قشد',          den: 'Layered date dessert with cream',         dar: 'حلا التمر بطبقات مع القشطة' },
+    { id: 'cookies', g: 1, price: 15, img: 'cookies', en: 'Cookies',        ar: 'كوكيز',        den: 'Fresh-baked, soft in the middle',          dar: 'كوكيز طازجة وطرية من النص' }
   ];
   /* =============================================================== */
 
   var T = {
     en: {
-      devBtn: 'About the designer', devTitle: 'Designed & built by', devName: 'Abdulelah', order: 'Order', scroll: 'Scroll',
+      devBtn: 'About the designer', devTitle: 'Designed & built by', devName: 'Abdulelah', order: 'Order', scroll: 'Scroll', keep: 'Keep scrolling',
       tagline: 'Hot drinks & winter sweets', w1: 'Matcha', w2: '= Money', w3: '= The bag', lang: 'Language',
       footer: 'Order online · Pay by transfer · Confirm on WhatsApp', duoAlt: 'Cartoon of the two Winter AlRayan sellers at their table',
       steps: ['Menu', 'Details', 'Transfer', 'Sent'],
@@ -272,8 +272,8 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
       copy: 'Copy', copied: 'Copied', copyFail: 'Hold to copy',
       how: ['Copy the number and open your bank app.', 'Transfer the exact amount (quick transfer to a mobile number).', 'Come back and tap “I’ve transferred”.'],
       sent: 'I’ve transferred', payHint: 'Keep a screenshot of the transfer — you’ll send it with your order.',
-      cTitle: 'Confirm your order', cBody: function (a, n) { return 'Did you transfer <b>' + a + '</b> to <b dir="ltr">' + n + '</b>? We’ll open WhatsApp with your order already written — just hit send and attach the transfer screenshot.'; },
-      cCheck: 'Yes, I’ve completed the transfer', cSend: 'Send order on WhatsApp', cCancel: 'Not yet',
+      cTitle: 'Confirm your transfer', cBody: function (a, n) { return 'Did you transfer <b>' + a + '</b> to <b dir="ltr">' + n + '</b>? We’ll open WhatsApp with your order already written — just hit send and attach the transfer screenshot.'; },
+      cCheck: 'Yes, I’ve completed the transfer', cSend: 'Confirm order', cCancel: 'Not yet',
       doneTitle: 'Order ready to send!', doneBody: 'WhatsApp opened with your order. Press send and attach the transfer screenshot.',
       reopen: 'Open WhatsApp again', orderFor: 'Order for', orderNo: 'Order', notes: 'Notes', paidBy: 'Paid by bank transfer',
       showTicket: 'Show this ticket when you pick up your order.', newOrder: 'Start a new order', am: 'AM', pm: 'PM',
@@ -283,7 +283,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
       }
     },
     ar: {
-      devBtn: 'عن المصمم', devTitle: 'تصميم وتطوير', devName: 'عبدالإله', order: 'اطلب', scroll: 'اسحب لتحت',
+      devBtn: 'عن المصمم', devTitle: 'تصميم وتطوير', devName: 'عبدالإله', order: 'اطلب', scroll: 'اسحب', keep: 'كمّل سحب',
       tagline: 'مشروبات حارة وحلا الشتاء', w1: 'ماتشا', w2: '= فلوس', w3: '= الشنطة', lang: 'اللغة',
       footer: 'اطلب أونلاين · حوّل · أكّد طلبك على الواتساب', duoAlt: 'رسمة كرتونية لصاحبي Winter AlRayan عند طاولتهم',
       steps: ['المنيو', 'بياناتك', 'التحويل', 'تم'],
@@ -296,8 +296,8 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
       copy: 'نسخ', copied: 'تم النسخ', copyFail: 'اضغط مطوّل للنسخ',
       how: ['انسخ الرقم وافتح تطبيق البنك.', 'حوّل المبلغ بالضبط (تحويل سريع لرقم جوال).', 'ارجع هنا واضغط «حوّلت».'],
       sent: 'حوّلت ✓', payHint: 'خذ صورة (سكرين) للتحويل — بترسلها مع طلبك على الواتساب.',
-      cTitle: 'تأكيد الطلب', cBody: function (a, n) { return 'حوّلت <b>' + a + '</b> على الرقم <b dir="ltr">' + n + '</b>؟ بنفتح لك الواتساب ورسالة الطلب جاهزة — بس اضغط إرسال وأرفق صورة التحويل.'; },
-      cCheck: 'إيه، خلّصت التحويل', cSend: 'أرسل الطلب على الواتساب', cCancel: 'لسّا',
+      cTitle: 'تأكيد التحويل', cBody: function (a, n) { return 'حوّلت <b>' + a + '</b> على الرقم <b dir="ltr">' + n + '</b>؟ بنفتح لك الواتساب ورسالة الطلب جاهزة — بس اضغط إرسال وأرفق صورة التحويل.'; },
+      cCheck: 'إيه، خلّصت التحويل', cSend: 'تأكيد الطلب', cCancel: 'لسّا',
       doneTitle: 'طلبك جاهز للإرسال!', doneBody: 'فتحنا لك الواتساب ورسالة الطلب مكتوبة. اضغط إرسال وأرفق صورة التحويل.',
       reopen: 'افتح الواتساب مرة ثانية', orderFor: 'الطلب باسم', orderNo: 'رقم الطلب', notes: 'ملاحظات', paidBy: 'الدفع: تحويل بنكي',
       showTicket: 'اعرض هذي التذكرة لما تستلم طلبك.', newOrder: 'طلب جديد', am: 'ص', pm: 'م',
@@ -419,7 +419,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
     var items = MENU.filter(function (m) { return m.g === S.tab; }).map(function (m) {
       var q = S.cart[m.id] || 0, name = S.lang === 'ar' ? m.ar : m.en;
       return '<div class="tile' + (q ? ' on' : '') + '">' +
-        '<div class="top"><span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + m.icon + '"/></svg></span>' +
+        '<div class="top"><img class="ph" src="assets/items/' + m.img + '.webp" alt="" loading="lazy" decoding="async">' +
         (q ? '<span class="badge">' + q + '</span>' : '') + '</div>' +
         '<div class="nm">' + esc(name) + '</div><div class="ds">' + esc(S.lang === 'ar' ? m.dar : m.den) + '</div>' +
         '<div class="pr">' + money(m.price) + '</div>' +
@@ -494,7 +494,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
     return '<h3 id="sheetTitle">' + esc(X.cTitle) + '</h3>' +
       '<p>' + X.cBody(money(t.total), prettyNum(CONFIG.transferNumber)) + '</p>' +
       '<label class="chk"><input type="checkbox" id="cChk"><span>' + esc(X.cCheck) + '</span></label>' +
-      '<a class="btn primary waBtn" id="cSend" href="#" target="_blank" rel="noopener" aria-disabled="true">' + I.wa + esc(X.cSend) + '</a>' +
+      '<a class="btn primary" id="cSend" href="#" target="_blank" rel="noopener" aria-disabled="true">' + esc(X.cSend) + '</a>' +
       '<button type="button" class="btn ghost" data-act="closeSheet">' + esc(X.cCancel) + '</button>';
   }
 
@@ -609,18 +609,131 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
 
   $('#orderPill').addEventListener('click', function () { $('#menu').scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' }); });
 
-  /* ---------- scroll story ---------- */
-  var hero = $('#hero'), stage = $('#stage'), menu = $('#menu'), win = $('#win'), duo = $('#duo');
-  var raf = 0, heroOn = true;
+  /* ---------- scroll story (two clips scrubbed on a canvas) ---------- */
+  var NA = 73, NB = 79;
+  var frameUrl = function (i) { return i < NA ? 'assets/frames/a/' + String(i + 1).padStart(3, '0') + '.webp' : 'assets/frames/b/' + String(i - NA + 1).padStart(3, '0') + '.webp'; };
+  // scroll budget (vh): clip 1 = 100, slide = 100, clip 2 = 300, hold = 30 -> 530vh
+  var A_END = 100 / 530, B_START = 200 / 530, B_END = 500 / 530;
+  var hero = $('#hero'), stage = $('#stage'), menu = $('#menu'), win = $('#win'), duo = $('#duo'), cv = $('#cv');
+  var imgs = new Array(NA + NB), loaded = 0, dirty = true, lastKey = '', raf = 0;
+  var tiny = document.createElement('canvas'); tiny.width = 20; tiny.height = 36;
+  var off = document.createElement('canvas');
+  var bg = new Image(), bgReady = false;
+  bg.onload = function () { bgReady = true; dirty = true; kick(); };
+  bg.src = 'assets/glass.jpg';
+
+  (function preload() {
+    var order = [], seen = {};
+    var push = function (i) { if (i >= 0 && i < NA + NB && !seen[i]) { seen[i] = 1; order.push(i); } };
+    push(0); push(NA - 1); push(NA);
+    [12, 6, 3, 1].forEach(function (st) { for (var i = 0; i < NA; i += st) push(i); for (var j = 0; j < NB; j += st) push(NA + j); });
+    var k = 0, bar = $('#loadBar i');
+    var next = function () {
+      if (k >= order.length) return;
+      var i = order[k++], im = new Image();
+      im.decoding = 'async';
+      im.onload = function () { imgs[i] = im; dirty = true; kick(); done(); };
+      im.onerror = done;
+      im.src = frameUrl(i);
+      function done() { loaded++; bar.style.width = (loaded / order.length * 100).toFixed(1) + '%'; if (loaded >= order.length) $('#loadBar').classList.add('done'); next(); }
+    };
+    for (var c = 0; c < 6; c++) next();
+  })();
+
+  function near(base, n, i) {
+    i = Math.max(0, Math.min(n - 1, i));
+    for (var d = 0; d < n; d++) {
+      var lo = i - d, hi = i + d;
+      if (lo >= 0 && imgs[base + lo]) return { im: imgs[base + lo], i: lo };
+      if (hi < n && imgs[base + hi]) return { im: imgs[base + hi], i: hi };
+    }
+    return null;
+  }
+  function pick(base, n, f) {
+    var i0 = Math.floor(f), fr = f - i0, a = near(base, n, i0);
+    if (!a) return null;
+    var b = fr > 0.02 && a.i === i0 && i0 + 1 < n ? imgs[base + i0 + 1] : null;
+    return { im: a.im, b: b || null, fr: fr, key: (base + a.i) + ':' + (b ? fr.toFixed(2) : '0') };
+  }
+  function draw(fa, fb, slide) {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var W = Math.round(cv.clientWidth * dpr), H = Math.round(cv.clientHeight * dpr);
+    if (!W || !H) return;
+    if (cv.width !== W || cv.height !== H) { cv.width = W; cv.height = H; dirty = true; }
+    var A = fa >= 0 ? pick(0, NA, fa) : null, B = fb >= 0 ? pick(NA, NB, fb) : null;
+    if (!A && !B) return;
+    var o = Math.round(slide * H);
+    var key = (A ? A.key : '-') + '|' + (B ? B.key : '-') + '|' + o + '|' + W + 'x' + H + '|' + bgReady;
+    if (!dirty && key === lastKey) return;
+    lastKey = key; dirty = false;
+    var ctx = cv.getContext('2d');
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = '#120d0a'; ctx.fillRect(0, 0, W, H);
+    var panel = function (F, oy, fw, fh, bgi) {
+      if (!F || oy >= H || oy <= -H) return;
+      ctx.save(); ctx.beginPath(); ctx.rect(0, oy, W, H); ctx.clip(); ctx.translate(0, oy);
+      ctx.fillStyle = '#120d0a'; ctx.fillRect(0, 0, W, H);
+      paint(ctx, W, H, dpr, F, fw, fh, 0.5, bgi);
+      ctx.restore();
+    };
+    panel(A, -o, 0.9, 0.9, null);
+    panel(B, H - o, 1, 1, bgReady ? bg : null);
+  }
+  function paint(ctx, W, H, dpr, F, fw, fh, cx, bgi) {
+    var im = F.im, vw = im.naturalWidth || im.width, vh = im.naturalHeight || im.height;
+    if (!vw || !vh) return;
+    var cover = Math.max(W / vw, H / vh), contain = Math.min(W / vw, H / vh);
+    var s = Math.max(contain, Math.min(cover, W / (fw * vw), H / (fh * vh)));
+    var dw = Math.round(vw * s), dh = Math.round(vh * s);
+    var dx = dw > W ? Math.round(Math.min(0, Math.max(W - dw, W / 2 - cx * dw))) : Math.round((W - dw) / 2);
+    var dy = Math.round((H - dh) / 2);
+    if (bgi && (dw < W || dh < H)) {
+      var bw = bgi.naturalWidth || 1, bh = bgi.naturalHeight || 1, bs = Math.max(W / bw, H / bh);
+      ctx.drawImage(bgi, (W - bw * bs) / 2, (H - bh * bs) / 2, bw * bs, bh * bs);
+      ctx.fillStyle = 'rgba(18,13,10,.18)'; ctx.fillRect(0, 0, W, H);
+      ctx.save(); ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 40 * dpr; ctx.shadowOffsetY = 14 * dpr;
+      ctx.drawImage(im, dx, dy, dw, dh); ctx.restore();
+      if (F.b) { ctx.globalAlpha = F.fr; ctx.drawImage(F.b, dx, dy, dw, dh); ctx.globalAlpha = 1; }
+      return;
+    }
+    if (dw < W || dh < H) {
+      var tc = tiny.getContext('2d');
+      tc.clearRect(0, 0, 20, 36); tc.drawImage(im, 0, 0, 20, 36);
+      ctx.imageSmoothingEnabled = true; ctx.globalAlpha = 0.85;
+      ctx.drawImage(tiny, (W - vw * cover) / 2, (H - vh * cover) / 2, vw * cover, vh * cover);
+      ctx.globalAlpha = 1; ctx.fillStyle = 'rgba(18,13,10,.35)'; ctx.fillRect(0, 0, W, H);
+    }
+    if (off.width !== dw || off.height !== dh) { off.width = dw; off.height = dh; }
+    var oc = off.getContext('2d');
+    oc.globalCompositeOperation = 'source-over'; oc.globalAlpha = 1; oc.clearRect(0, 0, dw, dh);
+    oc.drawImage(im, 0, 0, dw, dh);
+    if (F.b) { oc.globalAlpha = F.fr; oc.drawImage(F.b, 0, 0, dw, dh); oc.globalAlpha = 1; }
+    var fade = function (hor, len) {
+      var fe = Math.min(len * 0.1, 90 * dpr) / len;
+      var g = hor ? oc.createLinearGradient(0, 0, dw, 0) : oc.createLinearGradient(0, 0, 0, dh);
+      g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(fe, '#000'); g.addColorStop(1 - fe, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+      oc.globalCompositeOperation = 'destination-in'; oc.fillStyle = g; oc.fillRect(0, 0, dw, dh); oc.globalCompositeOperation = 'source-over';
+    };
+    if (dh < H) fade(false, dh);
+    if (dw < W) fade(true, dw);
+    ctx.drawImage(off, dx, dy);
+  }
+
   function tick() {
     raf = 0;
     var vh = window.innerHeight || 1;
     var r = hero.getBoundingClientRect(), span = r.height - vh;
-    var p = span > 0 ? clamp01(-r.top / span) : 0;
-    heroOn = r.bottom > 0;
-    stage.style.setProperty('--p', p.toFixed(4));
-    stage.style.setProperty('--ca', clamp01(1 - p / 0.06).toFixed(3));
-    stage.style.setProperty('--hw', (sm(clamp01((p - 0.22) / 0.14)) + sm(clamp01((p - 0.5) / 0.14))).toFixed(4));
+    var p = span > 0 ? clamp01(-r.top / span) : (r.top <= 0 ? 1 : 0);
+    var fa = -1, fb = -1, slide = 0;
+    if (p < B_START) fa = clamp01(p / A_END) * (NA - 1);
+    if (p > A_END) { slide = clamp01((p - A_END) / (B_START - A_END)); fb = clamp01((p - B_START) / (B_END - B_START)) * (NB - 1); }
+    var u = clamp01((p - B_START) / (B_END - B_START));
+    draw(fa, fb, slide);
+    var set = function (k, v) { stage.style.setProperty(k, v.toFixed(4)); };
+    set('--ca', clamp01(1 - p / 0.025));
+    set('--ck', Math.min(clamp01((p - (A_END - 0.04)) / 0.03), clamp01((A_END + 0.06 - p) / 0.04)));
+    set('--e', p >= B_START ? clamp01(u / 0.05) : 0);
+    set('--hw', sm(clamp01((u - 0.28) / 0.1)) + sm(clamp01((u - 0.6) / 0.1)));
     var top = menu.getBoundingClientRect().top;
     document.body.classList.toggle('in-menu', top < vh * 0.6);
     var q = still ? 1 : clamp01((vh - top) / (vh * 0.75));
@@ -630,34 +743,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   }
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
   window.addEventListener('scroll', kick, { passive: true });
-  window.addEventListener('resize', kick);
-
-  /* ---------- snow ---------- */
-  (function snow() {
-    var cv = $('#snow'); if (!cv || still) return;
-    var ctx = cv.getContext('2d'), flakes = [], W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    function size() {
-      W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.round(Math.min(110, W * H / 9000));
-      while (flakes.length < n) flakes.push(mk(true));
-      flakes.length = n;
-    }
-    function mk(any) { return { x: Math.random() * W, y: any ? Math.random() * H : -6, r: Math.random() * 2.2 + 0.6, s: Math.random() * 0.6 + 0.35, w: Math.random() * Math.PI * 2, a: Math.random() * 0.5 + 0.35 }; }
-    var last = 0;
-    function frame(ts) {
-      requestAnimationFrame(frame);
-      if (!heroOn || document.hidden) return;
-      var dt = Math.min(50, ts - (last || ts)) / 16.7; last = ts;
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < flakes.length; i++) {
-        var f = flakes[i];
-        f.y += f.s * dt; f.w += 0.012 * dt; f.x += Math.sin(f.w) * 0.35 * dt;
-        if (f.y > H + 6) flakes[i] = mk(false);
-        ctx.globalAlpha = f.a; ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.283); ctx.fillStyle = '#fff'; ctx.fill();
-      }
-    }
-    size(); window.addEventListener('resize', size); requestAnimationFrame(frame);
-  })();
+  window.addEventListener('resize', function () { dirty = true; kick(); });
 
   render();
   kick();
