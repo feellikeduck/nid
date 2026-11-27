@@ -53,15 +53,34 @@ body.in-menu #devPop{display:none}
 .vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(18,13,10,.5) 0%,rgba(18,13,10,0) 15%,rgba(18,13,10,0) 80%,rgba(18,13,10,.5) 100%)}
 #hero{position:relative;z-index:2;height:430vh}
 #stage{position:sticky;top:0;height:100vh;overflow:hidden;pointer-events:none}
-.words{position:absolute;left:0;right:0;bottom:min(calc(50vh + 28.125vw + 22px),calc(100vh - 170px));display:flex;justify-content:center;opacity:var(--e,0)}
-.flip{height:1.12em;overflow:hidden;font-size:clamp(40px,11.5vw,104px);font-weight:600;letter-spacing:-.02em;line-height:1.12;text-align:center;text-shadow:0 4px 30px rgba(0,0,0,.5)}
-.flip>div{transform:translateY(calc(var(--hw,0) * -1.12em));will-change:transform}
+.vig{background:linear-gradient(180deg,rgba(18,13,10,.55) 0%,rgba(18,13,10,0) 16%,rgba(18,13,10,0) 74%,rgba(18,13,10,.72) 100%)}
+#snow{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+/* the formula above the matcha clip */
+.formula{position:absolute;left:0;right:0;bottom:min(calc(50vh + 28.125vw + 18px),calc(100vh - 190px));display:flex;flex-direction:column;align-items:center;gap:10px;padding:0 20px;opacity:var(--e,0);text-align:center}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:rgba(243,233,200,.85)}
+html[lang=ar] .eyebrow{letter-spacing:0;font-size:13px}
+.eyebrow::before,.eyebrow::after{content:"";width:22px;height:1px;background:rgba(243,233,200,.6)}
+.eq{display:flex;flex-direction:column;align-items:center;gap:.06em;font-size:clamp(30px,min(10.5vw,6.5vh),84px);font-weight:700;letter-spacing:-.035em;line-height:1.02;text-shadow:0 6px 34px rgba(0,0,0,.45)}
+html[lang=ar] .eq{letter-spacing:0;line-height:1.25}
+.eq>span{display:flex;align-items:baseline;gap:.22em;will-change:transform,opacity,filter}
+.eq>span:nth-child(1){opacity:var(--r1,0);transform:translateY(calc((1 - var(--r1,0)) * .5em));filter:blur(calc((1 - var(--r1,0)) * 10px))}
+.eq>span:nth-child(2){opacity:var(--r2,0);transform:translateY(calc((1 - var(--r2,0)) * .5em));filter:blur(calc((1 - var(--r2,0)) * 10px))}
+.eq>span:nth-child(3){opacity:var(--r3,0);transform:translateY(calc((1 - var(--r3,0)) * .5em));filter:blur(calc((1 - var(--r3,0)) * 10px))}
+.eq .op{font-weight:300;color:var(--accent);opacity:.9}
+.eq .matcha{background:linear-gradient(100deg,#d4ee9e 0%,#9fca5c 45%,#F3E9C8 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 6px 26px rgba(0,0,0,.4))}
+.eq .bag{font-family:'Great Vibes',cursive;font-weight:400;font-size:1.32em;letter-spacing:0;color:var(--accent);line-height:.9}
+html[lang=ar] .eq .bag{font-family:inherit;font-size:1em;font-weight:700;line-height:inherit}
+@media (min-aspect-ratio:4/5){.formula{bottom:calc(100vh - 330px)}}
+/* logo under the matcha clip */
+.brand{position:absolute;left:0;right:0;top:min(calc(50vh + 28.125vw + 14px),calc(100vh - 210px));display:flex;flex-direction:column;align-items:center;gap:4px;opacity:var(--lg,0);transform:translateY(calc((1 - var(--lg,0)) * 18px))}
+.brand .script{font-size:clamp(44px,12.5vw,110px);line-height:1.1;white-space:nowrap;text-align:center;text-shadow:0 6px 40px rgba(0,0,0,.55),0 0 30px rgba(243,233,200,.22)}
+.brand p{margin:0;font-size:clamp(13px,3.6vw,17px);color:rgba(255,255,255,.82)}
 #loadBar{position:absolute;left:50%;top:max(80px,calc(env(safe-area-inset-top) + 70px));width:min(140px,40vw);height:3px;margin-left:calc(min(140px,40vw) / -2);border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden;transition:opacity .4s}
 #loadBar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 #loadBar.done{opacity:0}
 .hint{position:absolute;left:0;right:0;bottom:max(28px,env(safe-area-inset-bottom));z-index:2;display:flex;justify-content:center;opacity:var(--ca,1)}
 .hint.keep{opacity:var(--ck,0)}
-.hint>div{display:flex;align-items:center;gap:8px;padding:10px 14px 10px 18px;border-radius:999px;font-size:14px}
+.hint>div{display:flex;align-items:center;gap:8px;padding:11px 16px 11px 20px;border-radius:999px;font-size:15px;font-weight:600;letter-spacing:.01em;color:#fff;background:rgba(14,10,8,.58);border:1px solid rgba(255,255,255,.3);box-shadow:0 10px 30px rgba(0,0,0,.35);text-shadow:none}
 .nudge{animation:nudge 1.6s ease-in-out infinite}
 @keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
 
@@ -207,14 +226,19 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
 </button>
 
 <canvas id="cv" aria-hidden="true"></canvas>
+<canvas id="snow" aria-hidden="true"></canvas>
 <div class="vig" aria-hidden="true"></div>
 <header id="hero">
   <div id="stage">
     <h1 class="sr">Winter AlRayan</h1>
     <div id="loadBar" aria-hidden="true"><i></i></div>
-    <div class="words" aria-hidden="true"><div class="flip"><div><div data-t="w1"></div><div data-t="w2"></div><div data-t="w3"></div></div></div></div>
-    <div class="hint"><div class="glass"><span data-t="scroll"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
-    <div class="hint keep"><div class="glass"><span data-t="keep"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
+    <div class="formula" aria-hidden="true">
+      <div class="eyebrow" data-t="formula"></div>
+      <div class="eq"><span><b class="matcha" data-t="w1"></b></span><span><i class="op">=</i><b data-t="w2"></b></span><span><i class="op">=</i><b class="bag" data-t="w3"></b></span></div>
+    </div>
+    <div class="brand"><div class="script" lang="en">Winter AlRayan</div><p data-t="tagline"></p></div>
+    <div class="hint"><div><span data-t="scroll"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
+    <div class="hint keep"><div><span data-t="keep"></span><svg class="nudge" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></div></div>
   </div>
 </header>
 
@@ -260,7 +284,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   var T = {
     en: {
       devBtn: 'About the designer', devTitle: 'Designed & built by', devName: 'Abdulelah', order: 'Order', scroll: 'Scroll', keep: 'Keep scrolling',
-      tagline: 'Hot drinks & winter sweets', w1: 'Matcha', w2: '= Money', w3: '= The bag', lang: 'Language',
+      tagline: 'Hot drinks & winter sweets', formula: 'The winter formula', w1: 'Matcha', w2: 'Money', w3: 'The bag', lang: 'Language',
       footer: 'Order online · Pay by transfer · Confirm on WhatsApp', duoAlt: 'Cartoon of the two Winter AlRayan sellers at their table',
       steps: ['Menu', 'Details', 'Transfer', 'Sent'],
       drinks: 'Hot drinks', sweets: 'Winter sweets', add: 'Add', addOne: 'Add one ', removeOne: 'Remove one ',
@@ -284,7 +308,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
     },
     ar: {
       devBtn: 'عن المصمم', devTitle: 'تصميم وتطوير', devName: 'عبدالإله', order: 'اطلب', scroll: 'اسحب', keep: 'كمّل سحب',
-      tagline: 'مشروبات حارة وحلا الشتاء', w1: 'ماتشا', w2: '= فلوس', w3: '= الشنطة', lang: 'اللغة',
+      tagline: 'مشروبات حارة وحلا الشتاء', formula: 'معادلة الشتاء', w1: 'ماتشا', w2: 'فلوس', w3: 'الشنطة', lang: 'اللغة',
       footer: 'اطلب أونلاين · حوّل · أكّد طلبك على الواتساب', duoAlt: 'رسمة كرتونية لصاحبي Winter AlRayan عند طاولتهم',
       steps: ['المنيو', 'بياناتك', 'التحويل', 'تم'],
       drinks: 'مشروبات حارة', sweets: 'حلا الشتاء', add: 'أضف', addOne: 'أضف واحد ', removeOne: 'شيل واحد ',
@@ -622,7 +646,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   // scroll budget (vh): clip 1 = 90, slide = 70, clip 2 = 170 -> 330vh; the menu sheet then rises over the last matcha frame
   var A_END = 90 / 330, B_START = 160 / 330, B_END = 1;
   var hero = $('#hero'), stage = $('#stage'), menu = $('#menu'), win = $('#win'), duo = $('#duo'), cv = $('#cv');
-  var imgs = new Array(NA + NB), loaded = 0, dirty = true, lastKey = '', raf = 0;
+  var imgs = new Array(NA + NB), loaded = 0, dirty = true, lastKey = '', raf = 0, heroOn = true;
   var tiny = document.createElement('canvas'); tiny.width = 20; tiny.height = 36;
   var off = document.createElement('canvas');
   var bg = new Image(), bgReady = false;
@@ -683,7 +707,7 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
       paint(ctx, W, H, dpr, F, fw, fh, 0.5, bgi);
       ctx.restore();
     };
-    panel(A, -o, 0.9, 0.9, null);
+    panel(A, -o, 0.88, 1, null);
     panel(B, H - o, 1, 1, bgReady ? bg : null);
   }
   function paint(ctx, W, H, dpr, F, fw, fh, cx, bgi) {
@@ -740,8 +764,12 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
     set('--ca', clamp01(1 - p / 0.025));
     set('--ck', Math.min(clamp01((p - (A_END - 0.04)) / 0.03), clamp01((A_END + 0.06 - p) / 0.04)));
     set('--e', p >= B_START ? clamp01(u / 0.05) : 0);
-    set('--hw', sm(clamp01((u - 0.28) / 0.1)) + sm(clamp01((u - 0.6) / 0.1)));
+    set('--r1', sm(clamp01((u - 0.02) / 0.14)));
+    set('--r2', sm(clamp01((u - 0.26) / 0.14)));
+    set('--r3', sm(clamp01((u - 0.5) / 0.14)));
+    set('--lg', sm(clamp01((u - 0.7) / 0.18)));
     var top = menu.getBoundingClientRect().top;
+    heroOn = top > 0;
     document.body.classList.toggle('in-menu', top < vh * 0.6);
     var q = still ? 1 : clamp01((vh - top) / (vh * 0.75));
     var qe = 1 - Math.pow(1 - q, 3);
@@ -751,6 +779,33 @@ footer a{color:rgba(243,233,200,.75);text-decoration:none}
   function kick() { if (!raf) raf = requestAnimationFrame(tick); }
   window.addEventListener('scroll', kick, { passive: true });
   window.addEventListener('resize', function () { dirty = true; kick(); });
+
+  /* ---------- snow ---------- */
+  (function snow() {
+    var cv = $('#snow'); if (!cv || still) return;
+    var ctx = cv.getContext('2d'), flakes = [], W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+    function size() {
+      W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(110, W * H / 9000));
+      while (flakes.length < n) flakes.push(mk(true));
+      flakes.length = n;
+    }
+    function mk(any) { return { x: Math.random() * W, y: any ? Math.random() * H : -6, r: Math.random() * 2.2 + 0.6, s: Math.random() * 0.6 + 0.35, w: Math.random() * Math.PI * 2, a: Math.random() * 0.5 + 0.35 }; }
+    var last = 0;
+    function frame(ts) {
+      requestAnimationFrame(frame);
+      if (!heroOn || document.hidden) return;
+      var dt = Math.min(50, ts - (last || ts)) / 16.7; last = ts;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < flakes.length; i++) {
+        var f = flakes[i];
+        f.y += f.s * dt; f.w += 0.012 * dt; f.x += Math.sin(f.w) * 0.35 * dt;
+        if (f.y > H + 6) flakes[i] = mk(false);
+        ctx.globalAlpha = f.a; ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.283); ctx.fillStyle = '#fff'; ctx.fill();
+      }
+    }
+    size(); window.addEventListener('resize', size); requestAnimationFrame(frame);
+  })();
 
   render();
   kick();
